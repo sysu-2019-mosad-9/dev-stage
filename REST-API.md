@@ -35,9 +35,9 @@ curl -XGET "$BASE_URL/news/tabs"
 ```
 ---
 
-### 获取若干新闻标题
+### 获取若干新闻预览信息
 
-**GET** ```/news/<tabIndex>/titles?<count>```
+**GET** ```/news/<tabIndex>/entry?<count>&<img_most>```
 
 + count - 请求至多几条新闻标题。返回数量可能不足`count`。
 
@@ -48,26 +48,27 @@ curl -XGET "$BASE_URL/news/tabs"
   "code": 200,
   "data": {
     "count": number,
-    "titles": string[],
+    “data”: {
+      “id”: number,
+      "title": string,
+      "image_links": string[],
+      "detail_url": string,
+    }[],
   },
 }
 ```
 
-  + count - 实际返回多少条标题。
-
 #### Sample
 
 ```shell
-curl -XGET "$BASE_URL/news/1/titles?count=3"
+curl -XGET "$BASE_URL/news/1/entries?count=3&img_most=3"
 ```
----
 
-### 获取若干新闻预览图URL
+### 获取新闻详情页数据
 
-**GET** ```/news/<tabIndex>/images?<count>&<most>```
+**GET** ```/news/details/<newsIndex>```
 
-+ count - 请求至多几条新闻的预览图。返回数量可能不足`count`。
-+ most - 每条新闻至多返回多少张预览图。
++ newsIndex - 使用上一条请求返回的`data.data.id`字段
 
 #### Response
 
@@ -76,9 +77,70 @@ curl -XGET "$BASE_URL/news/1/titles?count=3"
   "code": 200,
   "data": {
     "count": number,
-    "payload": {
-      "each": number,
-      "urls": string[],
+    "data": {
+      "type": "typography" | "image",
+      "content": string,
+    }[],
+  }
+}
+```
+
++ 当 `data.type = "typography"`时，`data.content`为原始内容字符串
++ 当 `data.type = "image"` 时，`data.content`为图片URL
+
+#### Sample
+
+```shell
+curl -XGET "$BASE_URL/news/details/1"
+```
+
+## 图片页 [ /photo ]
+
+### 获取图片预览信息
+
+**GET** ```/photo/entries?<count>```
+
+#### Response
+
+```json
+{
+  "code": 200,
+  "data": {
+    "count": number,
+    "data": {
+      "title": string,
+      "image_link": string,
+    }[],
+  }[],
+}
+```
+
+#### Sample
+
+```shell
+curl -XGET "$BASE_URL/photo/entries?count=5"
+```
+
+## 视频页 [ /video ]
+
+### 获取视频预览信息
+
+**GET** ```/video/entries?<count>```
+
+#### Response
+
+```json
+{
+  "code": 200,
+  "data": {
+    "count": number,
+    "data": {
+      "id": number,
+      "title": string,
+      "author": string,
+      "video_link": string,
+      "n_good": number,
+      "n_comment": number,
     }[],
   }
 }
@@ -87,33 +149,5 @@ curl -XGET "$BASE_URL/news/1/titles?count=3"
 #### Sample
 
 ```shell
-curl -XGET "$BASE_URL/news/1/images?count=2&most=3"
+curl -XGET "$BASE_URL/video/entries?count=5"
 ```
-
-```json
-{
-   "payload" : [
-      {
-         "each" : 3,
-         "urls" : [
-            "https://zh.moegirl.org/File:215%E6%BB%A1%E7%A0%B4.png",
-            "https://img.moegirl.org/common/thumb/2/2b/Liangyishi_houqi_A.jpg/300px-Liangyishi_houqi_A.jpg",
-            "https://img.moegirl.org/common/thumb/2/2b/Liangyishi_houqi_A.jpg/300px-Liangyishi_houqi_A.jpg"
-         ]
-      },
-      {
-         "each" : 2,
-         "urls" : [
-            "https://img.moegirl.org/common/thumb/2/2b/Liangyishi_houqi_A.jpg/300px-Liangyishi_houqi_A.jpg",
-            "https://img.moegirl.org/common/thumb/2/2b/Liangyishi_houqi_A.jpg/300px-Liangyishi_houqi_A.jpg",
-         ]
-      }
-   ],
-   "count" : 2
-}
-
-```
-
-## 图片页 [ /photo ]
-
-## 视频页 [ /video ]
