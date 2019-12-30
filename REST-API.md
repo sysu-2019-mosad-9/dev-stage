@@ -2,7 +2,11 @@
 
 **Global Base URL** ```http://localhost:8000/api/v1```
 
-在运行 curl 例子前请在shell环境中设置变量`$BASE_URL`:
+> 公网URL ```http://47.102.157.223:8000/api/v1```
+> 可能不是最新的 但应该能用 
+> Last updaet : 2019-12-19 12:00
+
+在运行 curl 例子前请在shell环境中设置变量`$BASE_URL`，例如:
 ```shell
 export BASE_URL=localhost:8000/api/v1
 ```
@@ -37,7 +41,7 @@ curl -XGET "$BASE_URL/news/tabs"
 
 ### 获取若干新闻预览信息
 
-**GET** ```/news/<tabIndex>/entry?<count>&<img_most>```
+**GET** ```/news/<tabIndex>/entry?<count>```
 
 + count - 请求至多几条新闻标题。返回数量可能不足`count`。
 
@@ -47,9 +51,8 @@ curl -XGET "$BASE_URL/news/tabs"
 {
   "code": 200,
   "data": {
-    "count": number,
     “data”: {
-      “id”: number,
+      “id”: string,
       "title": string,
       "image_links": string[],
       "detail_url": string,
@@ -76,17 +79,21 @@ curl -XGET "$BASE_URL/news/1/entries?count=3&img_most=3"
 {
   "code": 200,
   "data": {
-    "count": number,
-    "data": {
-      "type": "typography" | "image",
-      "content": string,
-    }[],
+    "title": string,
+    "body": string,
+    // "comments": {
+    //   "author": string,
+    //   "create_time": int64,
+    //   "content": string,
+    // }[],
+    //"more_url": string,
   }
 }
 ```
 
 + 当 `data.type = "typography"`时，`data.content`为原始内容字符串
 + 当 `data.type = "image"` 时，`data.content`为图片URL
++ 评论显示更多就请求`more_url`字段值（还没做
 
 #### Sample
 
@@ -108,7 +115,6 @@ curl -XGET "$BASE_URL/news/details/1"
   "data": {
     "count": number,
     "data": {
-      "title": string,
       "image_link": string,
     }[],
   }[],
@@ -134,14 +140,126 @@ curl -XGET "$BASE_URL/photo/entries?count=5"
   "code": 200,
   "data": {
     "count": number,
-    "data": {
+    "data": []{
       "id": number,
       "title": string,
-      "author": string,
+      "uploader": string,
+      "video_preview": string,
       "video_link": string,
       "n_good": number,
       "n_comment": number,
-    }[],
+    },
+  }
+}
+```
+
++ `video_preview` - 浏览图图片地址
+
+#### Sample
+
+```shell
+curl -XGET "$BASE_URL/video/entries?count=5"
+```
+
+## 用户页 
+
+### 注册
+
+**POST** ```/users```
+
+| Name | Type |
+| --- | --- |
+| username | string |
+| password | string |
+
+#### Response
+
+成功后会自动登录，返回token
+
+```json
+{
+  "code": 200,
+  "data": {
+    "token": string,
+    "success": true,
+  },
+}
+```
+
+失败返回错误信息
+
+```json
+{
+  "code": 500 | 400,
+  "data": {
+    "message": string,
+  },
+}
+```
+
+#### Sample
+
+```shell
+curl -XPOST -H "Content-Type: application/json" -d '{"username": "1", "password":"1"}' "$BASE_URL/users"
+```
+
+### 登录
+
+**POST** ```/login```
+
+| Name | Type |
+| --- | --- |
+| username | string |
+| password | string |
+
+#### Response
+
+成功后会自动登录，返回token
+
+```json
+{
+  "code": 200,
+  "data": {
+    "token": string,
+  },
+}
+```
+
+```json
+{
+  "code": 500 | 400,
+  "data": {
+    "message": string,
+  },
+}
+```
+
+#### Sample
+
+```shell
+curl -XPOST -H "Content-Type: application/json" -d '{"username": "1", "password":"1"}' "${BASE_URL}/login"
+```
+
+## 搜索
+
+### 搜索栏输入文字查询
+
+**GET** ```/search?<text>&<count>```
+
++ text: 查询文字
++ count: 最多接受多少个查询结果
+
+#### Response
+
+```
+{
+  "code": 200,
+  "data": {
+    "result": []{
+      "title": string,
+      "tag": string,
+      "detail_url": string,
+    }
   }
 }
 ```
@@ -149,5 +267,5 @@ curl -XGET "$BASE_URL/photo/entries?count=5"
 #### Sample
 
 ```shell
-curl -XGET "$BASE_URL/video/entries?count=5"
+curl -XGET "${BASE_URL}/search?text=\"华为\"&count=3"
 ```

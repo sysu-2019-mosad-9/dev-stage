@@ -16,8 +16,6 @@ Original gitee repo: [mosadfenzu09](https://gitee.com/mosadfenzu09)
 
 [vscode liveshare](http://47.102.157.223:8001)
 
-server port (8000) has been shared.
-
 ## UI Design
 
 [online (xiaopiu)](https://www.xiaopiu.com/h5/byId?type=project&id=5de52a8f6b1b5a71bc479c94)
@@ -33,3 +31,4 @@ server port (8000) has been shared.
 ### Progress
 
 + 12.4: Initialize empty project and CI/CD
++ 12.30: Finish basic crawling & persisting & query
