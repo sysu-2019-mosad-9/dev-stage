@@ -1,4 +1,4 @@
-# News
+# K+News
 
 An iOS app serves as a simple news reader
 
@@ -12,19 +12,15 @@ Original gitee repo: [mosadfenzu09](https://gitee.com/mosadfenzu09)
 | Liu Jiahui   | [@tplish](https://github.com/tplish)         |
 | Liang Saibo  | [@dasinlsb](https://github.com/dasinlsb)     |
 
-## Shared Workspace
-
-[vscode liveshare](http://47.102.157.223:8001)
-
 ## UI Design
 
 [online (xiaopiu)](https://www.xiaopiu.com/h5/byId?type=project&id=5de52a8f6b1b5a71bc479c94)
 
-## Frontend(Objective-C)
+## Frontend (Objective-C)
 
 [github repo](https://github.com/sysu-2019-mosad-9/News-Frontend)
 
-## Backend(Rust)
+## Backend (Rust)
 
 [github repo](https://github.com/sysu-2019-mosad-9/News-Backend)
 

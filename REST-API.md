@@ -2,10 +2,6 @@
 
 **Global Base URL** ```http://localhost:8000/api/v1```
 
-> 公网URL ```http://47.102.157.223:8000/api/v1```
-> 可能不是最新的 但应该能用 
-> Last updaet : 2019-12-19 12:00
-
 在运行 curl 例子前请在shell环境中设置变量`$BASE_URL`，例如:
 ```shell
 export BASE_URL=localhost:8000/api/v1
@@ -23,7 +19,7 @@ export BASE_URL=localhost:8000/api/v1
 
 #### Response
 
-```json
+```
 {
   "code": 200,
   "data": {
@@ -47,7 +43,7 @@ curl -XGET "$BASE_URL/news/tabs"
 
 #### Response
 
-```json
+```
 {
   "code": 200,
   "data": {
@@ -75,18 +71,12 @@ curl -XGET "$BASE_URL/news/1/entries?count=3&img_most=3"
 
 #### Response
 
-```json
+```
 {
   "code": 200,
   "data": {
     "title": string,
     "body": string,
-    // "comments": {
-    //   "author": string,
-    //   "create_time": int64,
-    //   "content": string,
-    // }[],
-    //"more_url": string,
   }
 }
 ```
@@ -109,7 +99,7 @@ curl -XGET "$BASE_URL/news/details/1"
 
 #### Response
 
-```json
+```
 {
   "code": 200,
   "data": {
@@ -135,12 +125,12 @@ curl -XGET "$BASE_URL/photo/entries?count=5"
 
 #### Response
 
-```json
+```
 {
   "code": 200,
   "data": {
     "count": number,
-    "data": []{
+    "data": {
       "id": number,
       "title": string,
       "uploader": string,
@@ -148,7 +138,7 @@ curl -XGET "$BASE_URL/photo/entries?count=5"
       "video_link": string,
       "n_good": number,
       "n_comment": number,
-    },
+    }[],
   }
 }
 ```
@@ -176,7 +166,7 @@ curl -XGET "$BASE_URL/video/entries?count=5"
 
 成功后会自动登录，返回token
 
-```json
+```
 {
   "code": 200,
   "data": {
@@ -188,7 +178,7 @@ curl -XGET "$BASE_URL/video/entries?count=5"
 
 失败返回错误信息
 
-```json
+```
 {
   "code": 500 | 400,
   "data": {
@@ -216,7 +206,7 @@ curl -XPOST -H "Content-Type: application/json" -d '{"username": "1", "password"
 
 成功后会自动登录，返回token
 
-```json
+```
 {
   "code": 200,
   "data": {
@@ -225,7 +215,7 @@ curl -XPOST -H "Content-Type: application/json" -d '{"username": "1", "password"
 }
 ```
 
-```json
+```
 {
   "code": 500 | 400,
   "data": {
